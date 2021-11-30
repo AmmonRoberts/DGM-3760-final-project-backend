@@ -3,16 +3,16 @@ import listController from '../controllers/listController.js'
 
 let router = express.Router();
 
-router.get('/random', listController.getRandom);
+router.get('/random', listController.getRandomApi);
 
 router.get('/', listController.getAll);
 
-router.get('/:key', listController.getOne);
+router.get('/:id', listController.getOne);
 
 router.post('/', listController.create);
 
-router.put('/:key', listController.update);
+router.put('/:id', listController.update);
 
-router.delete('/:key', listController.remove);
+router.delete('/:id', listController.remove);
 
 export default router;

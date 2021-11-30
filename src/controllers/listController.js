@@ -1,8 +1,9 @@
 import listItem from '../models/listItem.js';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const listController = {
-    getRandom: async (req, res) => {
+    getRandomApi: async (req, res) => {
         let category = req.body.category;
         if (!category) {
             category = "";
@@ -19,75 +20,81 @@ const listController = {
 
     },
     getAll: async (req, res) => {
-        const books = await listItem.find()
-        res.send(books)
+        const apiList = await listItem.find()
+        res.send(apiList)
     },
     getOne: async (req, res) => {
-        let key = req.params.key;
+        let id = req.params.id;
 
-        const responseBook = await listItem.findOne({ bookKey: key })
+        const item = await listItem.findOne({ id: id })
 
 
-        if (responseBook) {
-            res.send(responseBook);
+        if (item) {
+            res.send(item);
         }
         else {
-            res.status(404).send("Book not found!")
+            res.status(404).send("Item not found!")
         }
     },
     create: async (req, res) => {
-        let requestBook = new listItem({
-            name: req.body.name,
-            authorName: req.body.authorName,
-            isbn: req.body.isbn,
-            bookKey: req.body.bookKey,
-            readingList: req.body.readingList,
-            favoriteList: req.body.favoriteList,
-            completedList: req.body.completedList,
+        let id = uuidv4();
+
+        let requestItem = new listItem({
+            id: id,
+            api: req.body.api,
+            description: req.body.description,
+            auth: req.body.auth,
+            https: req.body.https,
+            cors: req.body.cors,
+            category: req.body.category,
+            link: req.body.link,
+            favorite: req.body.favorite,
+            saved: req.body.saved,
         });
 
-        await requestBook.save(function (err) {
+        await requestItem.save(function (err) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when creating book',
+                    message: 'Error when creating list item',
                     error: err
                 });
             }
 
-            return res.status(201).json(requestBook);
+            return res.status(201).json(requestItem);
         });
     },
     update: async (req, res) => {
-        let key = req.params.key;
+        let id = req.params.id;
 
         try {
-            let existingBook = await listItem.findOne({ bookKey: key });
+            let existingItem = await listItem.findOne({ id: id });
 
-            existingBook.bookName = req.body.bookName
-            existingBook.authorName = req.body.authorName
-            existingBook.isbn = req.body.isbn
-            existingBook.bookKey = req.body.bookKey
-            existingBook.readingList = req.body.readingList
-            existingBook.favoriteList = req.body.favoriteList
-            existingBook.completedList = req.body.completedList
+            existingItem.api = req.body.api
+            existingItem.description = req.body.description
+            existingItem.auth = req.body.auth
+            existingItem.https = req.body.https
+            existingItem.cors = req.body.cors
+            existingItem.link = req.body.link
+            existingItem.favorite = req.body.favorite
+            existingItem.saved = req.body.saved
 
-            await existingBook.save();
-            res.send(existingBook);
+            await existingItem.save();
+            res.send(existingItem);
         }
         catch {
-            res.status(404).send("Book not found!")
+            res.status(404).send("Item not found!")
         }
     },
     remove: async (req, res) => {
-        let key = req.params.key;
+        let id = req.params.id;
 
-        let response = await listItem.deleteOne({ bookKey: key })
+        let response = await listItem.deleteOne({ id: id })
 
         if (response.deletedCount > 0) {
             res.send("Successfully deleted!")
         }
         else {
-            res.status(404).send("Book not found!")
+            res.status(404).send("Item not found!")
 
         }
     }
