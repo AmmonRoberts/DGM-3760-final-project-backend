@@ -1,11 +1,16 @@
 import mongoose from 'mongoose';
 
 let listItemSchema = mongoose.Schema({
-	'list_id': String,
-	'name': String,
-	'note': String,
-	'image': String,
-	'url': String,
+	'id': String,
+	'api': String,
+	'description': String,
+	'auth': String,
+	'https': Boolean,
+	'cors': String,
+	'category': String,
+	'link': String,
+	'favorite': Boolean,
+	'saved': Boolean
 });
 
 export default mongoose.model('listItem', listItemSchema);
