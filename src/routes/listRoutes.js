@@ -3,7 +3,11 @@ import listController from '../controllers/listController.js'
 
 let router = express.Router();
 
+router.get('/categories', listController.getCategories);
+
 router.get('/random', listController.getRandomApi);
+
+router.get('/entries', listController.getAllApis);
 
 router.get('/', listController.getAll);
 

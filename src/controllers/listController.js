@@ -3,12 +3,14 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const listController = {
-    getRandomApi: async (req, res) => {
-        let category = req.body.category;
+    getCategories: async (req, res) => {
+        let body = lowerCaseKeys(req.body)
+        let category = body.category;
+
         if (!category) {
             category = "";
         }
-        await axios.get(`http://api.publicapis.org/random?auth=null&category=${category}`).then(
+        await axios.get(`http://api.publicapis.org/categories`).then(
 
             (response) => {
                 res.send(response.data)
@@ -19,10 +21,50 @@ const listController = {
         })
 
     },
+
+    getAllApis: async (req, res) => {
+        let body = lowerCaseKeys(req.body)
+        let category = body.category;
+
+        if (!category) {
+            category = "";
+        }
+        await axios.get(`http://api.publicapis.org/entries?category=${category}`).then(
+
+            (response) => {
+                res.send(response.data)
+            }
+        ).catch(error => {
+            res.statusCode = 500
+            res.send(error.message)
+        })
+
+    },
+
+    getRandomApi: async (req, res) => {
+        let body = lowerCaseKeys(req.body)
+        let category = body.category;
+
+        if (!category) {
+            category = "";
+        }
+        await axios.get(`http://api.publicapis.org/random?category=${category}`).then(
+
+            (response) => {
+                res.send(response.data)
+            }
+        ).catch(error => {
+            res.statusCode = 500
+            res.send(error.message)
+        })
+
+    },
+
     getAll: async (req, res) => {
         const apiList = await listItem.find()
         res.send(apiList)
     },
+
     getOne: async (req, res) => {
         let id = req.params.id;
 
@@ -38,18 +80,19 @@ const listController = {
     },
     create: async (req, res) => {
         let id = uuidv4();
+        let body = lowerCaseKeys(req.body)
 
         let requestItem = new listItem({
             id: id,
-            api: req.body.api,
-            description: req.body.description,
-            auth: req.body.auth,
-            https: req.body.https,
-            cors: req.body.cors,
-            category: req.body.category,
-            link: req.body.link,
-            favorite: req.body.favorite,
-            saved: req.body.saved,
+            api: body.api,
+            description: body.description,
+            auth: body.auth,
+            https: body.https,
+            cors: body.cors,
+            category: body.category,
+            link: body.link,
+            favorite: body.favorite,
+            saved: body.saved,
         });
 
         await requestItem.save(function (err) {
@@ -65,18 +108,19 @@ const listController = {
     },
     update: async (req, res) => {
         let id = req.params.id;
+        let body = lowerCaseKeys(req.body)
 
         try {
             let existingItem = await listItem.findOne({ id: id });
 
-            existingItem.api = req.body.api
-            existingItem.description = req.body.description
-            existingItem.auth = req.body.auth
-            existingItem.https = req.body.https
-            existingItem.cors = req.body.cors
-            existingItem.link = req.body.link
-            existingItem.favorite = req.body.favorite
-            existingItem.saved = req.body.saved
+            existingItem.api = body.api
+            existingItem.description = body.description
+            existingItem.auth = body.auth
+            existingItem.https = body.https
+            existingItem.cors = body.cors
+            existingItem.link = body.link
+            existingItem.favorite = body.favorite
+            existingItem.saved = body.saved
 
             await existingItem.save();
             res.send(existingItem);
@@ -98,5 +142,15 @@ const listController = {
 
         }
     }
+}
+const lowerCaseKeys = (obj) => {
+    let key, keys = Object.keys(obj);
+    let n = keys.length;
+    let lowercaseObject = {}
+    while (n--) {
+        key = keys[n];
+        lowercaseObject[key.toLowerCase()] = obj[key];
+    }
+    return lowercaseObject;
 }
 export default listController
