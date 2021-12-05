@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 const listController = {
     getCategories: async (req, res) => {
-        let body = lowerCaseKeys(req.body)
-        let category = body.category;
+        let category = req.query.category;
+
 
         if (!category) {
             category = "";
@@ -23,13 +23,17 @@ const listController = {
     },
 
     getAllApis: async (req, res) => {
-        let body = lowerCaseKeys(req.body)
-        let category = body.category;
+        let title = req.query.title;
+        let category = req.query.category;
 
         if (!category) {
             category = "";
         }
-        await axios.get(`http://api.publicapis.org/entries?category=${category}`).then(
+        if (!title) {
+            title = "";
+        }
+
+        await axios.get(`http://api.publicapis.org/entries?category=${category}&title=${title}`).then(
 
             (response) => {
                 res.send(response.data)
@@ -42,8 +46,8 @@ const listController = {
     },
 
     getRandomApi: async (req, res) => {
-        let body = lowerCaseKeys(req.body)
-        let category = body.category;
+        let category = req.query.category;
+        console.log(category)
 
         if (!category) {
             category = "";
