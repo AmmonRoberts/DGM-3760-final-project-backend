@@ -6,7 +6,6 @@ const listController = {
     getCategories: async (req, res) => {
         let category = req.query.category;
 
-
         if (!category) {
             category = "";
         }
@@ -47,7 +46,6 @@ const listController = {
 
     getRandomApi: async (req, res) => {
         let category = req.query.category;
-        console.log(category)
 
         if (!category) {
             category = "";

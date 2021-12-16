@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "nodemon ./src/index.js",
     "server:prod": "node ./src/index.js",
     "build": "babel ./src --out-dir dist --copy-files",
     "server": "nodemon --exec babel-node ./src/index.js"
