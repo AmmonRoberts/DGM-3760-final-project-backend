@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
 
 let listItemSchema = mongoose.Schema({
-	'id': { type: String },
-	'api': { type: String, required: true },
-	'description': { type: String, required: true },
-	'auth': { type: String },
-	'https': { type: Boolean, required: true },
-	'cors': { type: String, required: true },
-	'category': { type: String, required: true },
-	'link': { type: String, required: true },
-	'favorite': { type: Boolean, required: true },
+	'API': { type: String, required: true },
+	'Description': { type: String, required: true },
+	'Auth': { type: String },
+	'HTTPS': { type: Boolean, required: true },
+	'CORS': { type: String, required: true },
+	'Category': { type: String, required: true },
+	'Link': { type: String, required: true },
+	'favoriteList': { type: Boolean, required: true },
 	'saved': { type: Boolean, required: true }
 });
 

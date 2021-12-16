@@ -9,14 +9,12 @@ router.get('/random', listController.getRandomApi);
 
 router.get('/entries', listController.getAllApis);
 
-router.get('/', listController.getAll);
-
-router.get('/:id', listController.getOne);
+router.get('/', listController.getOne);
 
 router.post('/', listController.create);
 
-router.put('/:id', listController.update);
+router.put('/', listController.update);
 
-router.delete('/:id', listController.remove);
+router.delete('/', listController.remove);
 
 export default router;

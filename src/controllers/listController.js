@@ -62,38 +62,37 @@ const listController = {
 
     },
 
-    getAll: async (req, res) => {
-        const apiList = await listItem.find()
-        res.send(apiList)
-    },
-
     getOne: async (req, res) => {
-        let id = req.params.id;
+        if (req.query.link) {
+            let link = req.query.link;
 
-        const item = await listItem.findOne({ id: id })
-
-
-        if (item) {
-            res.send(item);
+            const item = await listItem.findOne({ link: link })
+            console.log(link)
+            if (item) {
+                res.send(item);
+            }
+            else {
+                res.status(404).send("Item not found!")
+            }
         }
         else {
-            res.status(404).send("Item not found!")
+            const apiList = await listItem.find()
+            res.send(apiList)
         }
     },
     create: async (req, res) => {
-        let id = uuidv4();
-        let body = lowerCaseKeys(req.body)
+        // let body = lowerCaseKeys(req.body)
+        let body = req.body;
 
         let requestItem = new listItem({
-            id: id,
-            api: body.api,
-            description: body.description,
-            auth: body.auth,
-            https: body.https,
-            cors: body.cors,
-            category: body.category,
-            link: body.link,
-            favorite: body.favorite,
+            API: body.API,
+            Description: body.Description,
+            Auth: body.Auth,
+            HTTPS: body.HTTPS,
+            Cors: body.Cors,
+            Category: body.Category,
+            Link: body.Link,
+            favoriteList: body.favoriteList,
             saved: body.saved,
         });
 
@@ -109,18 +108,20 @@ const listController = {
         });
     },
     update: async (req, res) => {
-        let id = req.params.id;
-        let body = lowerCaseKeys(req.body)
+        let link = req.query.link;
+        // let body = lowerCaseKeys(req.body)
+        let body = req.body;
 
         try {
-            let existingItem = await listItem.findOne({ id: id });
+            let existingItem = await listItem.findOne({ link: link });
 
-            existingItem.api = body.api
-            existingItem.description = body.description
-            existingItem.auth = body.auth
-            existingItem.https = body.https
-            existingItem.cors = body.cors
-            existingItem.link = body.link
+            existingItem.API = body.api
+            existingItem.Description = body.description
+            existingItem.Category = body.description
+            existingItem.Auth = body.auth
+            existingItem.HTTPS = body.https
+            existingItem.Cors = body.cors
+            existingItem.Link = body.link
             existingItem.favorite = body.favorite
             existingItem.saved = body.saved
 
@@ -132,9 +133,9 @@ const listController = {
         }
     },
     remove: async (req, res) => {
-        let id = req.params.id;
+        let link = req.query.link;
 
-        let response = await listItem.deleteOne({ id: id })
+        let response = await listItem.deleteOne({ link: link })
 
         if (response.deletedCount > 0) {
             res.send("Successfully deleted!")
