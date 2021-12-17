@@ -3,13 +3,13 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const listController = {
-    getCategories: async (req, res) => {
+    getCategories: (req, res) => {
         let category = req.query.category;
 
         if (!category) {
             category = "";
         }
-        await axios.get(`http://api.publicapis.org/categories`).then(
+        axios.get(`http://api.publicapis.org/categories`).then(
 
             (response) => {
                 res.send(response.data)
@@ -21,7 +21,7 @@ const listController = {
 
     },
 
-    getAllApis: async (req, res) => {
+    getAllApis: (req, res) => {
         let title = req.query.title;
         let category = req.query.category;
 
@@ -32,7 +32,7 @@ const listController = {
             title = "";
         }
 
-        await axios.get(`http://api.publicapis.org/entries?category=${category}&title=${title}`).then(
+        axios.get(`http://api.publicapis.org/entries?category=${category}&title=${title}`).then(
 
             (response) => {
                 res.send(response.data)
@@ -44,13 +44,13 @@ const listController = {
 
     },
 
-    getRandomApi: async (req, res) => {
+    getRandomApi: (req, res) => {
         let category = req.query.category;
 
         if (!category) {
             category = "";
         }
-        await axios.get(`http://api.publicapis.org/random?category=${category}`).then(
+        axios.get(`http://api.publicapis.org/random?category=${category}`).then(
 
             (response) => {
                 res.send(response.data)
@@ -80,7 +80,7 @@ const listController = {
             res.send(apiList)
         }
     },
-    create: async (req, res) => {
+    create: (req, res) => {
         // let body = lowerCaseKeys(req.body)
         let body = req.body;
 
@@ -96,7 +96,7 @@ const listController = {
             saved: body.saved,
         });
 
-        await requestItem.save(function (err) {
+        requestItem.save(function (err) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when creating list item',

@@ -5,7 +5,7 @@ let listItemSchema = mongoose.Schema({
 	'Description': { type: String, required: true },
 	'Auth': { type: String },
 	'HTTPS': { type: Boolean, required: true },
-	'CORS': { type: String, required: true },
+	'CORS': { type: String },
 	'Category': { type: String, required: true },
 	'Link': { type: String, required: true },
 	'favoriteList': { type: Boolean, required: true },
