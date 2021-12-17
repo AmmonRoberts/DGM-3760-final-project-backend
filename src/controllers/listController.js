@@ -66,8 +66,8 @@ const listController = {
         if (req.query.link) {
             let link = req.query.link;
 
-            const item = await listItem.findOne({ link: link })
-            console.log(link)
+            const item = await listItem.findOne({ Link: link })
+            console.log(item)
             if (item) {
                 res.send(item);
             }
@@ -113,15 +113,15 @@ const listController = {
         let body = req.body;
 
         try {
-            let existingItem = await listItem.findOne({ link: link });
+            let existingItem = await listItem.findOne({ Link: link });
 
-            existingItem.API = body.api
-            existingItem.Description = body.description
-            existingItem.Category = body.description
-            existingItem.Auth = body.auth
-            existingItem.HTTPS = body.https
-            existingItem.Cors = body.cors
-            existingItem.Link = body.link
+            existingItem.API = body.API
+            existingItem.Description = body.Description
+            existingItem.Category = body.Category
+            existingItem.Auth = body.Auth
+            existingItem.HTTPS = body.HTTPS
+            existingItem.Cors = body.Cors
+            existingItem.Link = body.Link
             existingItem.favorite = body.favorite
             existingItem.saved = body.saved
 
